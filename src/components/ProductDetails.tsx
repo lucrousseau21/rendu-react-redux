@@ -1,13 +1,33 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { fetchAllProducts, fetchProducts } from "../store/productSlice";
 
 const ProductDetails = () => {
+  const dispatch = useDispatch() as AppDispatch;
   const { id } = useParams();
 
   if (!id) return <p className="text-center text-gray-500 mt-8">Produit non trouvé</p>;
 
-  const product = useSelector((state: RootState) => state.products.items.find((p) => p.id === Number(id)));
+  const { items: products, isLoading } = useSelector((state: RootState) => state.products);
+
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchAllProducts());
+    }
+  }, [dispatch, products.length]);
+
+  // (pour que le scroll de la page ProductList ne se garde pas en arrivant ici)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  if (!id) return <p className="text-center text-gray-500 mt-8">Produit non trouvé</p>;
+
+  const product = products.find((p) => p.id === Number(id));
+
+  if (isLoading) return <p className="text-center text-gray-500 mt-8">Chargement...</p>;
 
   if (!product) return <p className="text-center text-gray-500 mt-8">Produit non trouvé</p>;
 

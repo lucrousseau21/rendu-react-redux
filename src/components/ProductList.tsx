@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchProducts, Product, setPage } from "../store/productSlice";
 import { addToCart } from "../store/cartSlice";
 import { Link } from "react-router-dom";
@@ -38,8 +38,16 @@ const ProductList = () => {
   };
   // console.log(items.length);
 
+  useEffect(() => {
+    handleSearch();
+  }, [searchQuery, dispatch, currentPage]);
+
   const isInWishlist = (productId: number) => {
     return wishlistItems.some((item) => item.id === productId);
+  };
+
+  const handleToggleWishlist = (product: Product) => {
+    dispatch(toggleWishlist(product));
   };
 
   const filteredProducts = products.filter((product) =>
@@ -59,18 +67,12 @@ const ProductList = () => {
         Liste des Produits
       </h1>
       <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} // Garde en mémoire la recherche
-          placeholder="Rechercher un produit"
-          className="border border-gray-300 p-2 rounded-lg w-1/2"
-        />
-        <button
-          onClick={handleSearch}
-          className="bg-blue-500 text-white px-4 py-2 rounded ml-4 hover:bg-blue-600 pb-8"
-        >
-          Rechercher
-        </button>
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Rechercher un produit"
+        className="border border-gray-300 p-2 rounded-lg w-1/2 mb-8"
+      />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* {items.map((product: Product) => ( */}
         {filteredProducts.map((product) => (
@@ -108,7 +110,7 @@ const ProductList = () => {
               Ajouter au panier
             </button>
             <button
-              onClick={() => dispatch(toggleWishlist(product))}
+              onClick={() => handleToggleWishlist(product)}
               className="mt-4"
             >
               {isInWishlist(product.id) ? (

@@ -38,8 +38,18 @@ export const fetchProducts = createAsyncThunk(
     const response = await fetch("https://dummyjson.com/products?limit=15&skip="+ (currentPage - 1) * 15);
     const jsonResponse = await response.json();
     // console.log(jsonResponse.products.length);
-
     return { products: jsonResponse.products as Product[], total: jsonResponse.total };
+  }
+);
+
+
+// ajout d'un fetchAllProducts utilisé pour l'affichage de la page ProductDetails de tous les produits (et non seulement les 15 premiers)
+export const fetchAllProducts = createAsyncThunk(
+  "products/fetchAllProducts",
+  async () => {
+    const response = await fetch("https://dummyjson.com/products?limit=1000"); // Ajustez la limite selon vos besoins
+    const jsonResponse = await response.json();
+    return { products: jsonResponse.products as Product[] };
   }
 );
 
@@ -80,6 +90,16 @@ const productSlice = createSlice({
       .addCase(fetchProducts.rejected, (state) => {
         state.isLoading = false;
         console.log("Error fetching products");
+      }).addCase(fetchAllProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllProducts.fulfilled, (state, action) => {
+        state.items = action.payload.products;
+        state.isLoading = false;
+      })
+      .addCase(fetchAllProducts.rejected, (state) => {
+        state.isLoading = false;
+        console.log("Error fetching all products");
       });
   },
 });

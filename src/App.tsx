@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, ScrollRestoration } from "react-router-dom";
 import "./App.css";
 import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
@@ -7,6 +7,7 @@ import ProductList from "./components/ProductList";
 const App = () => {
   return (
     <Router>
+      {/* <ScrollRestoration /> */}
       <div className="w-full mx-auto">
         <nav className="flex justify-center">
           <Link className="m-3" to="/">Accueil</Link>

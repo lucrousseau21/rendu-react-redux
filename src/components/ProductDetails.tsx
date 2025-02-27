@@ -11,6 +11,7 @@ const ProductDetails = () => {
 
   if (!product) return <p className="text-center text-gray-500 mt-8">Produit non trouvé</p>;
 
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       {/* Header Section */}

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export interface Product {
   thumbnail: string;
-  category: string;
+  category: string[];
   brand: string;
   discountPercentage: number;
   stock: number;

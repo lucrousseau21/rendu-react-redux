@@ -4,7 +4,7 @@ import { removeFromCart, updateQuantity } from "../store/cartSlice";
 
 // Cart
 const Cart = () => {
-  const cartItems = useSelector((state: RootState) => state.cartSlice.items);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch();
 
   const calculateTotal = () => {

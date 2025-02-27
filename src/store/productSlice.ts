@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Product {
   thumbnail: string;
@@ -48,10 +48,12 @@ const initialState: {
   isLoading: boolean;
   currentPage: number;
   total?: number;
+  searchTerm: string;
 } = {
   items: [],
   isLoading: false,
   currentPage: 1,
+  searchTerm: "",
 };
 
 const productSlice = createSlice({
@@ -60,6 +62,9 @@ const productSlice = createSlice({
   reducers: {
     setPage: (state, action) => {
       state.currentPage = action.payload
+    },
+    setProducts: (state, action: PayloadAction<Product[]>) => {
+      state.items = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -79,5 +84,5 @@ const productSlice = createSlice({
   },
 });
 
-export const { setPage } = productSlice.actions;
+export const { setPage, setProducts } = productSlice.actions;
 export default productSlice.reducer;
